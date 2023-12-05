@@ -2,6 +2,8 @@
 
 import load_data as ld 
 import os 
+import time
+start_time = time.time()
 
 f = os.path.basename(__file__)
 day = f[3:5]
@@ -53,3 +55,5 @@ for i, line in enumerate(data):
 
 print(ans1)
 print(ans2)
+
+print("--- %s seconds ---" % (time.time() - start_time))
