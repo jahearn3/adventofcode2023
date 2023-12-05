@@ -40,39 +40,23 @@ for i, line in enumerate(data):
                     if j == len(data):
                         break
 
-
 seed_trajectory = list(map(int, seeds))
 prv_dest = 'seed'
 destination = 'soil'
 for mo in map_order:
-    # source, destination = m.split('-to-')
     for k,v in maps.items(): 
-        # src, dest = k.split('-to-')
-        # if src == prv_dest:
         if mo == k:
             print(k)
-            mapping = {}
-            for vv in v:
-                dest_rng_start = int(vv[0])
-                src_rng_start = int(vv[1])
-                rng_length = int(vv[2])
-                print(dest_rng_start, src_rng_start, rng_length)
-                for m in range(rng_length):
-                    mapping[src_rng_start + m] = dest_rng_start + m
-                    if len(mapping) % 100 == 0:
-                        print(f'mapping has length {len(mapping)}')
-            print(mapping)
-            # Look up dest for each src
             next_src = []
             for s in seed_trajectory:
-                if s not in mapping:
-                    next_src.append(s)
-                else:
-                    next_src.append(mapping[s])
-                
-            print(next_src)
+                s_next = s
+                for vv in v:
+                    dest_rng_start = int(vv[0])
+                    src_rng_start = int(vv[1])
+                    rng_length = int(vv[2])
+                    if src_rng_start <= s <= src_rng_start + rng_length:
+                        s_next = dest_rng_start + s - src_rng_start
+                next_src.append(s_next)
             seed_trajectory = next_src
-            
-
-
+      
 print(min(seed_trajectory))
