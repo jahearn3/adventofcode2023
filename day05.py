@@ -7,7 +7,7 @@ f = os.path.basename(__file__)
 day = f[3:5]
 
 data = ld.load_data(f'example{day}.txt')
-data = ld.load_data(f'input{day}.txt')
+# data = ld.load_data(f'input{day}.txt')
 
 ans = 0
 
@@ -41,12 +41,9 @@ for i, line in enumerate(data):
                         break
 
 seed_trajectory = list(map(int, seeds))
-prv_dest = 'seed'
-destination = 'soil'
 for mo in map_order:
     for k,v in maps.items(): 
         if mo == k:
-            print(k)
             next_src = []
             for s in seed_trajectory:
                 s_next = s
@@ -60,3 +57,36 @@ for mo in map_order:
             seed_trajectory = next_src
       
 print(min(seed_trajectory))
+
+# Part 2, with help from HyperNeutrino's YouTube video
+seed_trajectory = list(map(int, seeds))
+seeds = []
+for i in range(1, len(seed_trajectory), 2):
+    start = seed_trajectory[i-1]
+    rng = seed_trajectory[i]
+    seeds.append((start, start + rng))
+
+for mo in map_order:
+    for k,v in maps.items(): 
+        if mo == k:
+            new = []
+            while len(seeds) > 0:
+                start, end = seeds.pop()
+                for a, b, c in v:
+                    dest_rng_start = int(a)
+                    src_rng_start = int(b)
+                    rng_length = int(c)
+                    overlap_start = max(start, src_rng_start)
+                    overlap_end = min(end, src_rng_start + rng_length)
+                    if overlap_start < overlap_end:
+                        new.append((overlap_start - src_rng_start + dest_rng_start, overlap_end - src_rng_start + dest_rng_start))
+                        if overlap_start > start:
+                            seeds.append((start, overlap_start))
+                        if end > overlap_end:
+                            seeds.append((overlap_end, end))
+                        break 
+                else:
+                    new.append((start, end))
+            seeds = new
+            
+print(min(seeds)[0])
