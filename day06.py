@@ -8,16 +8,13 @@ day = f[3:5]
 data = ld.load_data(f'example{day}.txt')
 data = ld.load_data(f'input{day}.txt')
 
-ans = 1
 times = list(map(int, data[0].split(':')[1].split()))
 dists = list(map(int, data[1].split(':')[1].split()))
-
+ans = 1
 for i in range(len(times)):
     count = 0
     for j in range(times[i]):
-        v = j
-        d = v * (times[i] - j)
-        if d > dists[i]:
+        if j * (times[i] - j) > dists[i]:
             count += 1
     ans *= count
 print(ans)
@@ -27,8 +24,6 @@ t = int(data[0].split(':')[1].strip().replace(' ',''))
 dist = int(data[1].split(':')[1].strip().replace(' ',''))
 ans = 0
 for j in range(t):
-    v = j
-    d = v * (t - j)
-    if d > dist:
+    if j * (t - j) > dist:
         ans += 1
 print(ans)
