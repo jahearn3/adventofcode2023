@@ -29,7 +29,6 @@ for i, line in enumerate(data):
     matches = []
     for n in w:
         if n == ' ' or n == '': 
-            print('removing ' + n + ' from w')
             w.remove(n)
         if n in h:
             matches.append(n)
