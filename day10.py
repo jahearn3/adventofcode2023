@@ -116,3 +116,8 @@ print(ans)
 # 6886 correct
 
 # Part 2
+data = ld.load_data(f'example{day}c.txt')
+# data = ld.load_data(f'example{day}d.txt')
+# data = ld.load_data(f'example{day}e.txt')
+# data = ld.load_data(f'input{day}.txt')
+
