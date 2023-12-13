@@ -235,20 +235,40 @@ for l, line in enumerate(data):
             # If connected to a corner tile
             if l == 0 and c == 0: # top left corner
                 out_of_the_loop.append((l, c))
+                new_gridline += 'O'
             elif l == 0 and c == len(line) - 1: # top right corner
                 out_of_the_loop.append((l, c))
+                new_gridline += 'O'
             elif l == len(data) - 1 and c == 0: # bottom left corner
                 out_of_the_loop.append((l, c))
+                new_gridline += 'O'
             elif l == len(data) - 1 and c == len(line) - 1:
                 out_of_the_loop.append((l, c))
+                new_gridline += 'O'
             elif (l + 1, c) in out_of_the_loop:
                 out_of_the_loop.append((l, c))
+                new_gridline += 'O'
             elif (l - 1, c) in out_of_the_loop:
                 out_of_the_loop.append((l, c))
+                new_gridline += 'O'
             elif (l, c + 1) in out_of_the_loop:
                 out_of_the_loop.append((l, c))
+                new_gridline += 'O'
             elif (l, c - 1) in out_of_the_loop:
                 out_of_the_loop.append((l, c))
+                new_gridline += 'O'
+            elif (l - 1, c - 1) in out_of_the_loop:
+                out_of_the_loop.append((l, c))
+                new_gridline += 'O'
+            elif (l + 1, c - 1) in out_of_the_loop:
+                out_of_the_loop.append((l, c))
+                new_gridline += 'O'
+            elif (l + 1, c + 1) in out_of_the_loop:
+                out_of_the_loop.append((l, c))
+                new_gridline += 'O'
+            elif (l - 1, c + 1) in out_of_the_loop:
+                out_of_the_loop.append((l, c))
+                new_gridline += 'O'
             elif first_pipe_index < c < last_pipe_index:
                 new_gridline += 'X'
             else:
@@ -261,3 +281,6 @@ for l, line in enumerate(data):
 print(ans)
 print(upper_limit) # 5828
 # 1289 is too high
+# 712 is too high
+# 326 is too low
+# 505 incorrect
