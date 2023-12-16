@@ -14,13 +14,13 @@ energized = []
 energcoor = []
 q = [start]
 while len(q) > 0:
-    print('q:', q)
+    # print('q:', q)
     (x, y, dir) = q.pop()
-    print(f'popped ({x}, {y}, {dir})' )
+    # print(f'popped ({x}, {y}, {dir})' )
     x, y = int(x), int(y)
     energized.append((str(x), str(y), dir))
     energcoor.append((x, y))
-    print(f'found {data[y][x]}')
+    # print(f'found {data[y][x]}')
     # Empty space
     if data[y][x] == '.':
         if dir == 'r':
@@ -45,7 +45,7 @@ while len(q) > 0:
                     q.append((str(x), str(y+1), dir))
     # Mirrors
     elif data[y][x] == '\\':
-        print('backslash')
+        # print('backslash')
         if dir == 'r':
             if y + 1 < len(data):
                 if (str(x), str(y+1), 'd') not in energized:
@@ -57,15 +57,15 @@ while len(q) > 0:
                 # q.append((str(y-1), str(x), 'u'))
                     q.append((str(x), str(y-1), 'u'))
         elif dir == 'u':
-            if x + 1 < len(data[0]):
-                if (str(x+1), str(y), 'r') not in energized:
-                # q.append((str(y), str(x+1), 'r'))
-                    q.append((str(x+1), str(y), 'r'))
-        elif dir == 'd':
             if x > 0:
                 if (str(x-1), str(y), 'l') not in energized:
-                # q.append((str(y), str(x-1), 'l'))
+                # q.append((str(y), str(x+1), 'r'))
                     q.append((str(x-1), str(y), 'l'))
+        elif dir == 'd':
+            if x + 1 < len(data[0]):
+                if (str(x+1), str(y), 'l') not in energized:
+                # q.append((str(y), str(x-1), 'l'))
+                    q.append((str(x+1), str(y), 'l'))
     elif data[y][x] == '/':
         if dir == 'r':
             if y > 0:
@@ -128,18 +128,19 @@ while len(q) > 0:
                 if (str(x-1), str(y), dir) not in energized:
                 # q.append((str(y), str(x-1), dir))
                     q.append((str(x-1), str(y), dir))
-    if len(q) > len(data) * len(data[0]):
-        break
+    # if len(q) > len(data) * len(data[0]):
+    #     break
 
 
 
-print(len(set(energized)))
+print(len(set(energcoor)))
+# 47 incorrect
 
-for y, line in enumerate(data):
-    new_line = ''
-    for x, char in enumerate(line):
-        if (x, y) in energcoor:
-            new_line += '#'
-        else:
-            new_line += '.'
-    print(new_line)
+# for y, line in enumerate(data):
+#     new_line = ''
+#     for x, char in enumerate(line):
+#         if (x, y) in energcoor:
+#             new_line += '#'
+#         else:
+#             new_line += '.'
+#     print(new_line)
