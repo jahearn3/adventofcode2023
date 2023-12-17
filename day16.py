@@ -7,20 +7,20 @@ f = os.path.basename(__file__)
 day = f[3:5]
 
 data = ld.load_data(f'example{day}.txt')
-# data = ld.load_data(f'input{day}.txt')
+data = ld.load_data(f'input{day}.txt')
 
 start = ('0', '0', 'r') # coordinates and direction
 energized = []
 energcoor = []
 q = [start]
 while len(q) > 0:
-    # print('q:', q)
+    print('q:', q)
     (x, y, dir) = q.pop()
-    # print(f'popped ({x}, {y}, {dir})' )
+    print(f'popped ({x}, {y}, {dir})' )
     x, y = int(x), int(y)
     energized.append((str(x), str(y), dir))
     energcoor.append((x, y))
-    # print(f'found {data[y][x]}')
+    print(f'found {data[y][x]}')
     # Empty space
     if data[y][x] == '.':
         if dir == 'r':
