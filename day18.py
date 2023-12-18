@@ -16,23 +16,31 @@ cur = start
 for line in data:
     direction, distance, color = line.split(' ')
     distance = int(distance)
+    # print(direction, distance)
     x, y = cur
+    # print(f'from ({x}, {y})')
     if direction == 'U':
         for i in range(distance):
             y += 1 
             trench.append((x, y))
+            # print(f'appending ({x}, {y})')
     elif direction == 'D':
         for i in range(distance):
             y -= 1 
             trench.append((x, y))
+            # print(f'appending ({x}, {y})')
     elif direction == 'L':
         for i in range(distance):
             x -= 1 
             trench.append((x, y))
+            # print(f'appending ({x}, {y})')
     elif direction == 'R':
         for i in range(distance):
             x += 1 
             trench.append((x, y))
+            # print(f'appending ({x}, {y})')
+    cur = (x, y)
+    # print(f'cur ended at ({x}, {y})')
 
 # Digging out what is in between trenches
 max_x, max_y = 0, 0
@@ -57,6 +65,7 @@ for i in range(min_y, max_y + 1):
     max_x_i = min_x 
     for x, y in trench:
         if y == i:
+            # print((x, y))
             if x > max_x_i:
                 max_x_i = x 
             elif x < min_x_i:
@@ -66,7 +75,8 @@ for i in range(min_y, max_y + 1):
 
 
 print(len(full_trench))
-print(full_trench)
+# 44867 too high
 
-print(len(trench))
-print(trench)
+print(len(set(full_trench))) # 44867
+
+print(len(set(trench))) # 4064
