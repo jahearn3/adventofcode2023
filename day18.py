@@ -59,24 +59,73 @@ print(min_x, max_x)
 print(min_y, max_y)
 
 full_trench = []
-# For each row, find min and max for that row, and fill in the rest
+
+# The following code is close but still not quite right
 for i in range(min_y, max_y + 1):
-    min_x_i = max_x 
-    max_x_i = min_x 
-    for x, y in trench:
-        if y == i:
-            # print((x, y))
-            if x > max_x_i:
-                max_x_i = x 
-            elif x < min_x_i:
-                min_x_i = x 
-    for j in range(min_x_i, max_x_i + 1):
-        full_trench.append((j, i))
+    # print('y=', i)
+    trench_edges = []
+    for j in range(min_x, max_x + 1):
+        if (j, i) in trench:
+            trench_edges.append(j)
+            full_trench.append((j, i))
+    if len(trench_edges) == 2: 
+        for k in range(trench_edges[0], trench_edges[1] + 1):
+            full_trench.append((k, i))
+    elif len(trench_edges) == 4 and trench_edges[3] - trench_edges[2] > 1 and trench_edges[2] - trench_edges[1] > 1 and trench_edges[1] - trench_edges[0] > 1:
+        for k in range(trench_edges[0], trench_edges[1] + 1):
+            full_trench.append((k, i))
+        for k in range(trench_edges[2], trench_edges[3] + 1):
+            full_trench.append((k, i)) 
+    else:    
+        trench_diffs = []
+        for k in range(1, len(trench_edges)):
+            trench_diffs.append(trench_edges[k] - trench_edges[k-1])
+        if sum(trench_diffs) == len(trench_diffs):
+            for k in range(trench_edges[0], trench_edges[-1] + 1):
+                full_trench.append((k, i))
+        else:
+            # print('case C')
+            # print(trench_edges)
+            fill = True 
+            for k, edge in enumerate(trench_edges):
+            # for k in range(trench_edges[1], trench_edges[-1] + 1):
+                # print((k, i))
+                if k > 0:
+                    if trench_edges[k] - trench_edges[k-1] == 1:
+                        # print(f'c2: ({k},{i})')
+                        full_trench.append((k, i))
+                    elif fill:
+                        for l in range(trench_edges[k-1], trench_edges[k] + 1):
+                            # print(f'c3: ({l},{i})')
+                            full_trench.append((l, i))
+                        fill = False 
+                    elif fill == False:
+                        fill = True 
+                    # else:
+                    #     print(f'c4: ({k},{i})')
+                    #     full_trench.append((k, i))
+                else:
+                    full_trench.append((k, i))
 
+print(len(set(full_trench))) 
 
-print(len(full_trench))
-# 44867 too high
+for i in range(min_y, max_y + 1):
+    trench_viz = f'{i}'
+    for j in range(min_x, max_x + 1):
+        if (j, i) in trench:
+            trench_viz += '#'
+        else:
+            trench_viz += '.'
+    # print(trench_viz)
+    with open('data/output18.txt', 'a') as myfile:
+        myfile.write(trench_viz + '\n')
 
-print(len(set(full_trench))) # 44867
+# Manually filled in the trenches
 
-print(len(set(trench))) # 4064
+data = ld.load_data('output18edges_filledin.txt')
+ans = 0
+for line in data:
+    for char in line:
+        if char == '#':
+            ans += 1
+print(ans)
