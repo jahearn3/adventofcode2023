@@ -31,8 +31,9 @@ for line in workflows:
 
 # Loop through ratings, assigning them to workflows
 ans = 0
+rej_sum = 0
 for r in ratings:
-    print(r)
+    # print(r)
     x, m, a, s = r.strip('{}').split(',')
     x = int(x.split('=')[1])
     m = int(m.split('=')[1])
@@ -41,18 +42,20 @@ for r in ratings:
 
     running = True
     cur = 'in'
-    count = 0
+    # count = 0
+    flow = []
     while running:
-        if count > 10:
-            break 
-        count += 1
+        flow.append(cur)
+        # if count > 10:
+        #     break 
+        # count += 1
         steps = wf[cur]
         for step in steps:
             if step in wf[cur]:
-                print('step', step)
+                # print('step', step)
                 if ':' in step:
                     condition, next = step.split(':')
-                    print('condition', condition)
+                    # print('condition', condition)
                     if '>' in condition:
                         # print('case 1')
                         var, num = condition.split('>')
@@ -99,24 +102,29 @@ for r in ratings:
                     # print('case 0')
                     cur = step 
                 if step == 'A' or cur == 'A':
-                    print('accepted')
+                    # print('accepted')
                     accepted.append(r)
+                    flow.append('A')
                     ans += x + m + a + s 
-                    print(ans)
+                    # print(ans)
                     running = False
                     break
                 elif step == 'R' or cur == 'R':
                     # print('curr', cur)
-                    print('rejected')
+                    # print('rejected')
                     rejected.append(r)
+                    flow.append('R')
+                    rej_sum += x + m + a + s
                     running = False
                     break
                 # print('cur', cur)
+    print(r, flow) 
             
 
 
 
 print(ans)
+print(rej_sum)
 # 355385 too low
 print()
 print('Total: ')

@@ -14,4 +14,6 @@ ans = 0
 # Dijkstra's algorithm (weighted search)
 # 3-block limit is a wrench
 
+
+
 print(ans)
