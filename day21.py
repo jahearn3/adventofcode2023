@@ -7,7 +7,7 @@ f = os.path.basename(__file__)
 day = f[3:5]
 
 data = ld.load_data(f'example{day}.txt')
-data = ld.load_data(f'input{day}.txt')
+# data = ld.load_data(f'input{day}.txt')
 
 for i, line in enumerate(data):
     for j, char in enumerate(line):
@@ -18,7 +18,7 @@ for i, line in enumerate(data):
 
 garden = ['.', 'S']
 q = [start]
-final_step = 64
+final_step = 10
 for i in range(final_step):
     next = []
     while len(q) > 0:
@@ -34,5 +34,32 @@ for i in range(final_step):
     q = list(set(next))
     if i + 1 == final_step:
         print(len(q))
-        break 
 
+
+# Part 2
+for i in range(final_step):
+    next = []
+    while len(q) > 0:
+        xx, yy = q.pop(0)
+        if 0 < xx < xmax:
+            x = xx 
+        else:
+            if xx > xmax:
+                x = xx % xmax
+        if 0 < yy < ymax:
+            y = yy 
+        else:
+            if yy > ymax:
+                y = y % ymax
+
+        if data[y][x-1] in garden:
+            next.append((x-1, y))
+        if data[y][x+1] in garden:
+            next.append((x+1, y))
+        if data[y-1][x] in garden:
+            next.append((x, y-1))
+        if data[y+1][x] in garden:
+            next.append((x, y+1))
+    q = list(set(next))
+    if i + 1 == final_step:
+        print(len(q))
