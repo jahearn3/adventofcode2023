@@ -159,3 +159,123 @@ for i in range(1000):
 
 print(low_pulses * high_pulses)
 
+# Part 2
+# qb is a conjunction module and the only feed into rx
+# jg, kv, rz, mr are flip-flop modules and the only feeds into qb
+# find lcm of cycles of these flip-flop modules
+fff = ['kv', 'jg', 'rz', 'mr']
+ss = []
+l = 1000
+while len(ss) < 4:
+    l += 1
+# for l in range(i, 5000):
+    # print('button', 'low', 'broadcaster')
+    low_pulses += 1
+    destination = modules['broadcaster']
+    q = []
+    if ',' in destination:
+        dests = destination.split(',')
+        for d in dests:
+            d = d.strip()
+            # print('broadcaster', 'low', d)
+            low_pulses += 1
+            q.append(('broadcaster', 'low', d))
+    else:
+        d = destination.strip()
+        # print('broadcaster', 'low', d)
+        low_pulses += 1
+        q.append(('broadcaster', 'low', d))
+    
+    while len(q) > 0:
+        prev, pulse_type, cur = q.pop(0)
+        for j, f in enumerate(fff):
+            if prev == f and pulse_type == 'high' and cur == 'qb':
+                ss.append(l)
+                fff.pop(j)
+                # print(prev, l)
+        if cur in modules:
+            mod_type, dest, state = modules[cur]
+            if mod_type == '%':
+                if pulse_type == 'low':
+                    if state == 0:
+                        modules[cur] = [mod_type, dest, 1]
+                        if ',' in dest:
+                            dests = dest.split(',')
+                            for d in dests:
+                                d = d.strip()
+                                # print(cur, 'high', d)
+                                high_pulses += 1
+                                q.append((cur, 'high', d)) 
+                        else:
+                            d = dest.strip()
+                            # print(cur, 'high', d)
+                            high_pulses += 1
+                            q.append((cur, 'high', d)) 
+                    else:
+                        modules[cur] = [mod_type, dest, 0]
+                        if ',' in dest:
+                            dests = dest.split(',')
+                            for d in dests:
+                                d = d.strip()
+                                # print(cur, 'low', d)
+                                low_pulses += 1
+                                q.append((cur, 'low', d))
+                        else:
+                            d = dest.strip()
+                            # print(cur, 'low', d)
+                            low_pulses += 1
+                            q.append((cur, 'low', d))
+            elif mod_type == '&':
+                mod_type, dest, memory = modules[cur]
+
+                # update memory for that input
+                for k, v in memory.items():
+                    if k == prev:
+                        memory[k] = pulse_type
+                        #* Not sure if I need to update the dict this way too
+                        # val[2] = memory
+                        # modules[key] = val
+
+                # if it remembers high pulses for all inputs, send a low pulse
+                count_values = 0
+                count_highs = 0
+                for v in memory.values():
+                    count_values += 1
+                    if v == 'high':
+                        count_highs += 1
+                if count_highs == count_values:
+                    if ',' in dest:
+                        dests = dest.split(',')
+                        for d in dests:
+                            d = d.strip()
+                            # print(cur, 'low', d)
+                            low_pulses += 1
+                            q.append((cur, 'low', d))
+                    else:
+                        d = dest.strip()
+                        # print(cur, 'low', d)
+                        low_pulses += 1
+                        q.append((cur, 'low', d))
+                # otherwise send a high pulse
+                else:
+                    if ',' in dest:
+                        dests = dest.split(',')
+                        for d in dests:
+                            d = d.strip()
+                            # print(cur, 'high', d)
+                            high_pulses += 1
+                            q.append((cur, 'high', d))
+                    else:
+                        d = dest.strip()
+                        # print(cur, 'high', d)
+                        high_pulses += 1
+                        q.append((cur, 'high', d))
+
+
+import math 
+
+while len(ss) > 1:
+    a = ss.pop(0)
+    b = ss.pop(0)
+    ss.append(int((a * b) / math.gcd(a, b)))
+print(ss[0])
